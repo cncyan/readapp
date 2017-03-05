@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="css/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <title>阅读器</title>
+    <style type="text/css">
+        html{
+            width: 100%;
+            height: 100%;
+            overflow-x:hidden;
+        }
+        body{
+            text-align: left;
+            width: 100%;
+            overflow: hidden;
+            background: #e9dfc7;
+        }
+        .m-read-content{
+            font-size: 14px;
+            color: #555;
+            line-height: 31px;
+            padding: 15px;
+        }
+        .m-read-content h4{
+            font-size: 20px;
+            color:#736357;
+            border-bottom: 1px solid #736357;
+            margin: 0 0 1px 0;
+
+        }
+        .m-read-content p{
+            text-indent:2em;
+            margin: 0.5em 0;
+            line-height: 24px;
+        }
+        .u-tab{
+            height: 34px;
+            margin: 10px auto;
+            line-height: 34px;
+            border-radius: 8px;
+            border: 1px solid #858382;
+            font-size: 12px;
+            background:#000;
+            opacity: 0.9;
+            list-style: none;
+        }
+        .u-tab li{
+            display: inline-block;
+            width: 40%;;
+            border-right: 1px solid #858382;
+            text-align: center;
+            color: #fff;
+        }
+        .u-tab li:nth-child(2){
+            border-right: none;
+        }
+        .m-button-bar{
+            width: 70%;
+            max-width: 800px;
+            padding: 5px;
+            margin: 0 auto;
+        }
+        .top-nav{
+            position: fixed;
+            top:0px;
+            left:0px;
+            height: 50px;
+            width: 100%;
+            z-index: 9999;
+            background: #000;
+        }
+        .icon-back{
+            position: absolute;
+            top:14px;
+            left: 10px;
+            width: 23px;
+            height: 23px;
+            background:url("img/return.png");/*base64图片,字体文件实现*/
+            background-size: contain;
+        }
+        .nav-title{
+            position: absolute;
+            top: 16px;
+            left: 42px;
+            color: #d5d5d6;
+        }
+        .bottom-nav-bk{
+            position: fixed;
+            bottom:0px;
+            left:0px;
+            height: 70px;
+            border: 0px;
+            width: 100%;
+            z-index: 10000;
+            background: #000;
+            opacity: 0.9;
+            clear: both;
+        }
+        .bottom-nav{
+            position: fixed;
+            bottom:0px;
+            left:0px;
+            height: 70px;
+            border: 0px;
+            width: 100%;
+            z-index: 100001;
+            background: none;
+            color: #fff;
+            clear: both;
+        }
+        .menu-cantainer,.font-cantainer,.daytime-cantainer{
+            width: 25%;
+            height: 50px;
+            float: left;
+            color: #fff;
+            display: block;
+            margin: 4%;
+            text-align: center;
+            position: relative;
+        }
+        .menu-img,.font-img,.day-img{
+            position: absolute;
+            left: 42%;
+            width: 20px;
+            height: 20px;
+        }
+        .menu-img{
+            background: url("img/menu.png");
+            background-size: contain;
+        }
+        .font-img{
+            background: url("img/font.png");
+            background-size: contain;
+        }
+        .yesfont{
+            background: url("img/hfont.png");
+            background-size: contain;
+        }
+        .day-img{
+            background: url("img/whiteday.png");
+            background-size: contain;
+        }
+        .blackday{
+            background: url("img/blackday.png");
+            background-size: contain;
+        }
+        .menu-name,.font-name,.day-name{
+            position: absolute;
+            left:40%;
+            top: 25px;
+            font-size: 12px;
+        }
+        .nav-plane-bk{
+            position: fixed;
+            left: 0;
+            bottom: 70px;
+            height: 135px;
+            width: 100%;
+            background: #000000;
+            opacity: 0.9;
+            z-index: 10000;
+        }
+        .nav-plane{
+            position: fixed;
+            left: 0;
+            bottom: 70px;
+            height: 135px;
+            width: 100%;
+            background: none;
+            color: #fff;
+            z-index: 10001;
+        }
+        .child-mod{
+            padding: 5px 10px;
+            margin: 15px;
+        }
+        .child-mod span{
+            display: inline-block;
+            padding-right: 20px;
+            padding-left: 10px;
+        }
+        .font-size-button{
+            background: none;
+            border: 1px solid #8c8c8c;
+            color: #fff;
+            border-radius:16px;
+            padding: 5px 40px;
+        }
+        .child-mod button:nth-child(2){
+            margin-right: 10px;;
+        }
+        .child-mod div:nth-child(2){
+            background: #fff;
+        }
+        .child-mod div:nth-child(3){
+            background: #faebd7;
+        }
+        .child-mod div:nth-child(4){
+            background: #DEB887;
+        }
+        .child-mod div:nth-child(5){
+            background: #819EDE;
+        }
+        .child-mod div:nth-child(6){
+            background: #2916A6;
+        }
+        .child-mod div:nth-child(7){
+            background: #000;
+        }
+        .bk-container{
+            position: relative;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            display: inline-block;
+            vertical-align: -14px;
+        }
+        .bk-container-currect{
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 16px;
+            border: 1px solid #ff7800;
+            display: inline-block;
+            top: -2px;
+            left: -2px;
+        }
+        .artical-action-mid{
+            position: fixed;
+            z-index: 10002;
+            width: 100%;
+            height: 40%;
+            top: 30%;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <div class="m-artical-action">
+        <div class="artical-action-mid" id="action-mid"></div>
+    </div>
+    <div id="top-nav" class="top-nav" style="display: none">
+        <div class="icon-back"></div>
+        <div class="nav-title">返回书架</div>
+    </div>
+    <div id="fiction-chapter-title"></div>
+    <div id="fiction-container" class="m-read-content">
+        <h4>这是小说题目</h4>
+        <p>我叫乔超楠我今年挺大了具体多大年纪我也不是特别会算年纪但是我觉得我还不大，我相信我可以做好自己想要做好的事情，加油无论结果如何你一定不能放弃。</p>
+        <p>要相信自己的能力，高考都能应付这些东西算什么呢？不抛弃不放弃我相信自己可以完成的事请有很多多到自己也无法估量，为什么人生在世不能精彩去做，我相信我可以做到的，加油乔超楠必胜</p>
+        <p>我叫乔超楠我今年挺大了具体多大年纪我也不是特别会算年纪但是我觉得我还不大，我相信我可以做好自己想要做好的事情，加油无论结果如何你一定不能放弃。</p>
+        <p>要相信自己的能<i class="fa fa-align-justify" aria-hidden="true"></i>力，高考都能应付这些东西算什么呢？不抛弃不放弃我相信自己可以完成的事请有很多多到自己也无法估量，为什么人生在世不能精彩去做，我相信我可以做到的，加油乔超楠必胜</p>
+    </div>
+    <div class="m-button-bar">
+        <ul class="u-tab">
+            <li id="prev-btn">上一章</li>
+            <li id="next-btn">下一章</li>
+        </ul>
+    </div>
+    <div class="nav-plane-bk jfont-container" style="display: none"></div>
+    <div class="nav-plane jfont-container" id="font-container" style="display: none">
+        <div class="child-mod">
+            <span>字号</span>
+            <button id="large-font" class="font-size-button">大</button>
+            <button id="small-font" class="font-size-button">小</button>
+        </div>
+        <div class="child-mod">
+            <span>背景</span>
+            <div class="bk-container">
+                <div class="bk-container-currect"></div>
+            </div>
+            <div class="bk-container">
+                <div></div>
+            </div>
+            <div class="bk-container">
+                <div></div>
+            </div>
+            <div class="bk-container">
+                <div></div>
+            </div>
+            <div class="bk-container">
+                <div></div>
+            </div>
+            <div class="bk-container">
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav-bk jbottom-nav" style="display: none"></div>
+    <div class="bottom-nav jbottom-nav" id="bottom-nav" style="display: none;">
+        <div class="menu-cantainer">
+                <div class="menu-img"></div>
+                <div class="menu-name">目录</div>
+        </div>
+        <div class="font-cantainer">
+            <div class="font">
+                <div class="font-img"></div>
+                <div class="font-name">字体</div>
+            </div>
+        </div>
+        <div class="daytime-cantainer">
+            <div class="day">
+                <div class="day-img"></div>
+                <div class="day-name">模式</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/zepto v1.2.0.min.js"></script>
+<script>
+    window.jQuery=$;
+</script>
+<script src="js/jquery.base64.js"></script>
+<script src="js/jquery.jsonp.js"></script>
+<script>
+    (function(){
+        var Util=(function(){
+            var prefix='html5_reader_';
+            var StorageGetter=function(key){
+                return localStorage.getItem(prefix+key);
+            }
+            var StorageSetter=function(key,val){
+                return localStorage.setItem(prefix+key,val);
+            }
+            return {
+                StorageGetter:StorageGetter,
+                StorageSetter:StorageSetter
+            }
+        })();
+        var dom={
+            top_nav:$('#top-nav'),
+            bottom_nav:$('.jbottom-nav'),
+            font_container:$('.jfont-container')
+        };
+        var win=$(window);
+        var doc=$(document);
+        var fiction_container=$('#fiction-container');
+        var initfontsize=Util.StorageGetter('font-size');
+        initfontsize=parseInt(initfontsize);
+        var day_img=$(".day-img");
+        if(!initfontsize){
+            initfontsize=15;
+        }
+        fiction_container.css("font-size",initfontsize);
+        function main(){
+            //整个项目的入口函数
+            eventhanlder();
+        }
+        function readmodel(){
+            //实现和阅读器相关的数据交互方法
+        }
+        function  readerbaseframe(){
+            //渲染基本的UI结构
+        }
+        function  eventhanlder(){
+            //交互的事件绑定
+            $('#action-mid').click(function(){
+                if(dom.top_nav.css('display')=='none'){
+                    dom.bottom_nav.show();
+                    dom.top_nav.show();
+                }else{
+                    day_img.removeClass("blackday");/////////这个地方实现不了呀
+                    dom.bottom_nav.hide();
+                    dom.top_nav.hide();
+                    dom.font_container.hide();
+                }
+            });
+            $('.font-img').click(function(){
+                if(dom.font_container.css('display')=='none'){
+                    dom.font_container.show();
+                }else{
+                    dom.font_container.hide();
+                }
+            });
+            win.scroll(function () {
+                dom.bottom_nav.hide();
+                dom.top_nav.hide();
+                dom.font_container.hide();
+                day_img.removeClass("blackday");
+            });
+
+            //字体界面实现
+            var font_img=$(".font-img")
+            font_img.click(function(){
+                if(font_img.hasClass("yesfont")){
+                    font_img.removeClass("yesfont");
+                }else{
+                    font_img.addClass("yesfont");
+                }
+            });
+            $("#large-font").click(function(){
+                if(initfontsize>20){
+                    return;
+                }
+                initfontsize+=1;
+                fiction_container.css("font-size",initfontsize);
+                Util.StorageSetter("font-size",initfontsize);
+            });
+            $("#small-font").click(function(){
+                if(initfontsize<15){
+                    return;
+                }
+                initfontsize-=1;
+                fiction_container.css("font-size",initfontsize);
+                Util.StorageSetter("font-size",initfontsize);
+            });
+            var bk_container=$(".bk-container");
+            bk_container.click(function(){
+               $(this).children().addClass("bk-container-currect");
+                $(this).siblings().children().removeClass("bk-container-currect");;
+
+
+            });
+
+            //背景交互实现
+
+            day_img.click(function(){
+                if(day_img.hasClass("blackday")){
+                    day_img.removeClass("blackday");
+                }else{
+                    day_img.addClass("blackday");
+                }
+            });
+        }
+        main();
+    }) ();
+</script>
+</body>
+</html>
