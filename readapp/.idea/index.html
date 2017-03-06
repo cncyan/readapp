@@ -17,7 +17,7 @@
             text-align: left;
             width: 100%;
             overflow: hidden;
-            background: #e9dfc7;
+            background: #fff;
         }
         .m-read-content{
             font-size: 14px;
@@ -141,11 +141,11 @@
             background-size: contain;
         }
         .day-img{
-            background: url("img/whiteday.png");
+            background-image: url("img/whiteday.png");
             background-size: contain;
         }
         .blackday{
-            background: url("img/blackday.png");
+            background-image: url("img/blackday.png");
             background-size: contain;
         }
         .menu-name,.font-name,.day-name{
@@ -270,22 +270,22 @@
         </div>
         <div class="child-mod">
             <span>背景</span>
-            <div class="bk-container">
+            <div class="bk-container jwhite-btn">
                 <div class="bk-container-currect"></div>
             </div>
-            <div class="bk-container">
+            <div class="bk-container jmowhite-btn">
                 <div></div>
             </div>
-            <div class="bk-container">
+            <div class="bk-container jorrang-btn">
                 <div></div>
             </div>
-            <div class="bk-container">
+            <div class="bk-container jlightblue-btn">
                 <div></div>
             </div>
-            <div class="bk-container">
+            <div class="bk-container jblue-btn">
                 <div></div>
             </div>
-            <div class="bk-container">
+            <div class="bk-container jblack-btn">
                 <div></div>
             </div>
         </div>
@@ -340,13 +340,28 @@
         var win=$(window);
         var doc=$(document);
         var fiction_container=$('#fiction-container');
+        var day_img=$(".day-img");
+        //localstorage本地缓存处理部分
         var initfontsize=Util.StorageGetter('font-size');
         initfontsize=parseInt(initfontsize);
-        var day_img=$(".day-img");
         if(!initfontsize){
             initfontsize=15;
         }
         fiction_container.css("font-size",initfontsize);
+
+        var initcolor=Util.StorageGetter('background');
+        if(!initcolor){
+            initcolor="#fff";
+        }
+        if(initcolor=="fff" || initcolor=="#faebd7" || initcolor=="#DEB887"){
+            day_img.removeClass("blackday");
+        }
+        if(initcolor=="#000" || initcolor=="#819EDE" || initcolor=="#2916A6"){
+            day_img.addClass("blackday");
+        }
+        $("#root").parent().css("background",initcolor);
+
+
         function main(){
             //整个项目的入口函数
             eventhanlder();
@@ -364,7 +379,7 @@
                     dom.bottom_nav.show();
                     dom.top_nav.show();
                 }else{
-                    day_img.removeClass("blackday");/////////这个地方实现不了呀
+                    font_img.removeClass("yesfont");
                     dom.bottom_nav.hide();
                     dom.top_nav.hide();
                     dom.font_container.hide();
@@ -381,7 +396,7 @@
                 dom.bottom_nav.hide();
                 dom.top_nav.hide();
                 dom.font_container.hide();
-                day_img.removeClass("blackday");
+                font_img.removeClass("yesfont");
             });
 
             //字体界面实现
@@ -418,14 +433,58 @@
             });
 
             //背景交互实现
-
             day_img.click(function(){
                 if(day_img.hasClass("blackday")){
                     day_img.removeClass("blackday");
+                    initcolor="#fff";
+                    $("#root").parent().css("background",initcolor);
+                    Util.StorageSetter("background",initcolor);
+
                 }else{
                     day_img.addClass("blackday");
+                    initcolor="#000";
+                    $("#root").parent().css("background",initcolor);
+                    Util.StorageSetter("background",initcolor);
                 }
             });
+            $(".jwhite-btn").click(function(){
+                day_img.removeClass("blackday");
+                initcolor="#fff";
+                $("#root").parent().css("background",initcolor);
+                Util.StorageSetter("background",initcolor);
+            });
+            $(".jmowhite-btn").click(function () {
+                day_img.removeClass("blackday");
+                initcolor="#faebd7";
+                $("#root").parent().css("background",initcolor);
+                Util.StorageSetter("background",initcolor);
+            });
+            $(".jorrang-btn").click(function(){
+                day_img.removeClass("blackday");
+                initcolor="#DEB887";
+                $("#root").parent().css("background",initcolor);
+                Util.StorageSetter("background",initcolor);
+            })
+            $(".jlightblue-btn").click(function(){
+                day_img.addClass("blackday");
+                initcolor="#819EDE";
+                $("#root").parent().css("background",initcolor);
+                Util.StorageSetter("background",initcolor);
+            });
+            $(".jblue-btn").click(function(){
+                day_img.addClass("blackday");
+                initcolor="#2916A6";
+                $("#root").parent().css("background",initcolor);
+                Util.StorageSetter("background",initcolor);
+            });
+            $(".jblack-btn").click(function(){
+                day_img.addClass("blackday");
+                initcolor="#000";
+                $("#root").parent().css("background",initcolor);
+                Util.StorageSetter("background",initcolor);
+            });
+
+            //模式交互部分
         }
         main();
     }) ();
